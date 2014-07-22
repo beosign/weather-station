@@ -42,27 +42,24 @@ public class Application {
     }
 
     protected Filter createTestFilter() {
-        System.out.println("FILTER");
-        LOGGER.info("FILTER");
+        LOGGER.debug("FILTER");
         return new Filter() {
 
             @Override
             public void init(FilterConfig filterConfig) throws ServletException {
-                System.out.println("init");
+                LOGGER.debug("init");
 
             }
 
             @Override
             public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-                System.out.println("do filter");
+                LOGGER.debug("do filter");
                 chain.doFilter(request, response);
 
             }
 
             @Override
             public void destroy() {
-                // TODO Auto-generated method stub
-
             }
         };
     }
