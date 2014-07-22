@@ -8,47 +8,25 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
 public class Application {
-
-    public static final class MyInterceptor extends HandlerInterceptorAdapter {
-
-        @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-            System.out.println("Request from: " + request.getRemoteAddr());
-            return true;
-        }
-
-        @Override
-        public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-            System.out.println("Post Handle from: " + request.getRemoteAddr());
-
-        }
-
-        @Override
-        public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-            System.out.println("After completion from: " + request.getRemoteAddr());
-
-        }
-
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        LOGGER.debug("Started");
     }
 
     @Bean
@@ -65,6 +43,7 @@ public class Application {
 
     protected Filter createTestFilter() {
         System.out.println("FILTER");
+        LOGGER.info("FILTER");
         return new Filter() {
 
             @Override

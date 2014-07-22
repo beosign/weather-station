@@ -28,8 +28,14 @@ repositories {
 
 dependencies {
     compile("org.springframework:spring-core")
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa") {
+    	exclude module: 'spring-boot-starter-logging'
+    }
+    compile("org.springframework.boot:spring-boot-starter-web") {
+    	exclude module: 'spring-boot-starter-logging'
+    }
+    compile("org.springframework.boot:spring-boot-starter-log4j")
+    
     compile("com.h2database:h2")
     compile("org.springframework.data:spring-data-rest-webmvc")
     

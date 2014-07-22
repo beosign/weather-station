@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpHeaders;
@@ -29,9 +31,11 @@ public class RestReading {
 
     @BeforeClass
     public static void setup() {
+        Logger logger = LoggerFactory.getLogger(RestReading.class);
+
         context = SpringApplication.run(Application.class);
 
-        System.out.println("Let's inspect the beans provided by Spring Boot:");
+        logger.info("Let's inspect the beans provided by Spring Boot:");
 
         String[] beanNames = context.getBeanDefinitionNames();
         Arrays.sort(beanNames);
