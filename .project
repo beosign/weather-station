@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>WeatherStation</name>
-	<comment/>
-	<projects/>
-	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
-	</natures>
+	<comment></comment>
+	<projects>
+	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments/>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder</name>
+			<arguments>
+			</arguments>
 		</buildCommand>
 	</buildSpec>
-	<linkedResources/>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>edu.umd.cs.findbugs.plugin.eclipse.findbugsNature</nature>
+	</natures>
 </projectDescription>
