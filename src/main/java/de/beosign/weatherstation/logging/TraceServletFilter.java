@@ -1,36 +1,46 @@
 package de.beosign.weatherstation.logging;
 
-import java.io.IOException;
+import java.util.concurrent.atomic.AtomicLong;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
+import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.filter.ServletContextRequestLoggingFilter;
 
 import de.beosign.weatherstation.Application;
 
-public final class TraceServletFilter implements Filter {
+public final class TraceServletFilter extends ServletContextRequestLoggingFilter {
+    private static final String MDC_REQID = "REQID";
+    private static final AtomicLong INST_COUNTER = new AtomicLong();
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
+    private static final ThreadLocal<Long> TIME = new ThreadLocal<Long>();
+
+    public TraceServletFilter() {
+        LOGGER.trace("Instance created: " + INST_COUNTER.incrementAndGet());
+        setIncludeClientInfo(true);
+    }
+
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        LOGGER.debug("init");
+    protected void beforeRequest(HttpServletRequest request, String message) {
+        TIME.set(System.currentTimeMillis());
+        MDC.put(MDC_REQID, System.currentTimeMillis() % 100000);
+        LOGGER.debug(message);
 
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        LOGGER.debug("do filter");
-        chain.doFilter(request, response);
+    protected void afterRequest(HttpServletRequest request, String message) {
 
-    }
+        LOGGER.debug(message);
 
-    @Override
-    public void destroy() {
+        Long interval = System.currentTimeMillis() - TIME.get();
+        LOGGER.trace("Invovation time of servlet: " + interval + " ms");
+
+        TIME.set(null);
+        MDC.remove(MDC_REQID);
+
     }
 }
