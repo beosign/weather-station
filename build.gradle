@@ -40,7 +40,8 @@ dependencies {
     compile("org.springframework.data:spring-data-rest-webmvc")
     compile("commons-io:commons-io:2.4");
     compile("org.apache.httpcomponents:httpclient:4.3.3")
-    compile("org.springframework:spring-test") // Class DelegetingPutputStream is used by logging filter
+    compile("org.springframework:spring-test") // Class DelegetingOutputStream is used by logging filter
+    compile("com.ecyrd.speed4j:speed4j:0.4")
     
     testCompile("junit:junit")
     testCompile("org.hamcrest:hamcrest-all:1.3")
