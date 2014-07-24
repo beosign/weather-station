@@ -11,6 +11,10 @@ public class RepositoryTraceInterceptor extends CustomizableTraceInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
     private static final long serialVersionUID = 1L;
 
+    public RepositoryTraceInterceptor() {
+        setHideProxyClassNames(true);
+    }
+
     @Override
     protected void writeToLog(Log logger, String message, Throwable ex) {
         if (ex != null) {
