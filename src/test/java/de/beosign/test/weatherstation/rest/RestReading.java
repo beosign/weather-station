@@ -34,7 +34,6 @@ public class RestReading {
         Logger logger = LoggerFactory.getLogger(RestReading.class);
 
         context = SpringApplication.run(Application.class);
-
         logger.info("Let's inspect the beans provided by Spring Boot:");
 
         String[] beanNames = context.getBeanDefinitionNames();
