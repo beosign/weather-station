@@ -21,6 +21,7 @@ public final class TraceServletFilter extends ServletContextRequestLoggingFilter
     public TraceServletFilter() {
         LOGGER.trace("Instance created: " + INST_COUNTER.incrementAndGet());
         setIncludeClientInfo(true);
+        setIncludeQueryString(true);
     }
 
     @Override
