@@ -8,13 +8,8 @@ import org.springframework.context.annotation.Configuration;
 public class FilterBeans {
 
     @Bean
-    protected FilterRegistrationBean createTemperaturFilterRegistrationBean() {
+    protected FilterRegistrationBean traceServletFilterRegistrationBean() {
         return new FilterRegistrationBean(new TraceServletFilter());
-    }
-
-    @Bean
-    protected FilterRegistrationBean createLoggingFilterRegistrationBean() {
-        return new FilterRegistrationBean(new LoggingFilter());
     }
 
 }
