@@ -19,11 +19,18 @@ public abstract class Reading<T> extends JPAEntity {
 
     }
 
+    public Reading(T value) {
+        this(new Date(), value, null);
+    }
+
+    public Reading(T value, Sensor sensor) {
+        this(new Date(), value, sensor);
+    }
+
     public Reading(Date readDate, T value, Sensor sensor) {
         this.readDate = readDate;
         this.value = value;
         this.sensor = sensor;
-
     }
 
     public Date getReadDate() {
