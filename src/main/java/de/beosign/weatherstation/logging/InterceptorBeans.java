@@ -2,7 +2,6 @@ package de.beosign.weatherstation.logging;
 
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.interceptor.CustomizableTraceInterceptor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class InterceptorBeans {
     @Bean
-    public CustomizableTraceInterceptor interceptor() {
+    public RepositoryTraceInterceptor repositoryTraceInterceptor() {
 
         RepositoryTraceInterceptor interceptor = new RepositoryTraceInterceptor();
         interceptor.setEnterMessage("Entering $[targetClassName]::$[methodName]($[arguments]).");
@@ -20,11 +19,11 @@ public class InterceptorBeans {
     }
 
     @Bean
-    public Advisor traceAdvisor() {
+    public Advisor repositoryTraceAdvisor() {
 
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression("execution(public * org.springframework.data.repository.Repository+.*(..))");
 
-        return new DefaultPointcutAdvisor(pointcut, interceptor());
+        return new DefaultPointcutAdvisor(pointcut, repositoryTraceInterceptor());
     }
 }
