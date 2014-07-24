@@ -22,6 +22,8 @@ import org.springframework.mock.web.DelegatingServletInputStream;
 import org.springframework.mock.web.DelegatingServletOutputStream;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 
+import com.ecyrd.speed4j.StopWatch;
+
 import de.beosign.weatherstation.Application;
 
 /**
@@ -32,7 +34,7 @@ import de.beosign.weatherstation.Application;
 public final class TraceServletFilter extends AbstractRequestLoggingFilter {
     private static final String MDC_REQID = "REQID";
     private static final AtomicLong REQ_COUNTER = new AtomicLong();
-    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TraceServletFilter.class);
 
     public TraceServletFilter() {
         setIncludeClientInfo(true);
@@ -41,7 +43,6 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
 
     @Override
     protected void beforeRequest(HttpServletRequest request, String message) {
-
         LOGGER.debug(message);
     }
 
@@ -52,7 +53,8 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        long startTime = System.currentTimeMillis();
+        String perfLogMessage = " From " + request.getRemoteAddr() + ", uri = " + request.getRequestURI();
+        StopWatch sw = Application.getStopWatchFactory().getStopWatch();
 
         MDC.put(MDC_REQID, REQ_COUNTER.incrementAndGet() % 10000);
 
@@ -62,15 +64,23 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
         HttpServletResponse responseWrapper = loggingResponseWrapper(response, responseBaos);
         HttpServletRequest requestWrapper = loggingRequestWrapper(request, requestBaos);
 
+        Exception ex = null;
         LOGGER.trace("Request:\n" + requestBaos.toString());
+
         try {
             super.doFilterInternal(requestWrapper, responseWrapper, filterChain);
+        } catch (Exception e) {
+            ex = e;
+            throw e;
         } finally {
             LOGGER.trace("Response:\n" + responseBaos.toString());
 
-            Long interval = System.currentTimeMillis() - startTime;
-            LOGGER.trace("Invovation time of servlet: " + interval + " ms");
+            perfLogMessage = perfLogMessage + ", request body size = " + requestBaos.size() + ", response body size = " + responseBaos.size();
+            if (ex != null) {
+                perfLogMessage = perfLogMessage + ", EXCEPTION: " + ex.getMessage();
+            }
 
+            sw.stop("HTTP-Request", perfLogMessage);
             MDC.remove(MDC_REQID);
         }
 
