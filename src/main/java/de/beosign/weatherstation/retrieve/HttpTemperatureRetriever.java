@@ -1,4 +1,4 @@
-package de.beosign.weatherstation.reading;
+package de.beosign.weatherstation.retrieve;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -15,7 +15,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -30,24 +29,31 @@ import org.springframework.stereotype.Component;
 import de.beosign.weatherstation.properties.AppProperties;
 
 @Component
-public class HttpTemperatureRetriever {
+public class HttpTemperatureRetriever implements TemperatureRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpTemperatureRetriever.class);
 
     @Autowired
     private AppProperties p;
 
-    public Double retrieveTemperature() throws ClientProtocolException, IOException, KeyManagementException, NoSuchAlgorithmException {
+    /* (non-Javadoc)
+     * @see de.beosign.weatherstation.reading.TemperatureRetriever#retrieveTemperature()
+     */
+    @Override
+    public Double retrieve() throws RetrieveException {
 
-        CloseableHttpClient httpClient = createHttpClient();
-        Double temp = Double.NaN;
-        HttpGet get = new HttpGet(p.getHttpBaseurl() + p.getHttpTemperatureContext());
-        try (CloseableHttpResponse r = httpClient.execute(get)) {
-            String strTemp = IOUtils.toString(r.getEntity().getContent());
-            temp = Double.valueOf(strTemp);
+        Double temp;
+        try (CloseableHttpClient httpClient = createHttpClient()) {
 
+            temp = Double.NaN;
+            HttpGet get = new HttpGet(p.getHttpBaseurl() + p.getHttpTemperatureContext());
+            try (CloseableHttpResponse r = httpClient.execute(get)) {
+                String strTemp = IOUtils.toString(r.getEntity().getContent());
+                temp = Double.valueOf(strTemp);
+            }
+            LOGGER.debug("Temperature read: " + temp);
+        } catch (KeyManagementException | NumberFormatException | NoSuchAlgorithmException | IllegalStateException | IOException e) {
+            throw new RetrieveException(e);
         }
-
-        LOGGER.debug("Temperature read: " + temp);
 
         return temp;
 

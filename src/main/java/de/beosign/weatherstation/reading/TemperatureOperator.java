@@ -1,20 +1,19 @@
 package de.beosign.weatherstation.reading;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+
+import de.beosign.weatherstation.retrieve.RetrieveException;
+import de.beosign.weatherstation.retrieve.TemperatureRetriever;
 
 @Configuration
 public class TemperatureOperator {
     private static final Logger LOGGER = LoggerFactory.getLogger(TemperatureOperator.class);
 
     @Autowired
-    private HttpTemperatureRetriever temperatureReader;
+    private TemperatureRetriever temperatureReader;
 
     @Autowired
     private TemperatureReadingRepository temperatureReadingRepository;
@@ -22,10 +21,10 @@ public class TemperatureOperator {
     public void readAndStoreTemperature() {
         Double temp;
         try {
-            temp = temperatureReader.retrieveTemperature();
+            temp = temperatureReader.retrieve();
             TemperatureReading tr = new TemperatureReading(temp);
             temperatureReadingRepository.save(tr);
-        } catch (KeyManagementException | NoSuchAlgorithmException | IOException e) {
+        } catch (RetrieveException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
