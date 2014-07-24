@@ -24,17 +24,23 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Configuration
+import de.beosign.weatherstation.properties.AppProperties;
+
+@Component
 public class HttpTemperatureRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpTemperatureRetriever.class);
+
+    @Autowired
+    private AppProperties p;
 
     public Double retrieveTemperature() throws ClientProtocolException, IOException, KeyManagementException, NoSuchAlgorithmException {
 
         CloseableHttpClient httpClient = createHttpClient();
         Double temp = Double.NaN;
-        HttpGet get = new HttpGet("https://192.168.178.9:8443/temp");
+        HttpGet get = new HttpGet(p.getHttpBaseurl() + p.getHttpTemperatureContext());
         try (CloseableHttpResponse r = httpClient.execute(get)) {
             String strTemp = IOUtils.toString(r.getEntity().getContent());
             temp = Double.valueOf(strTemp);
@@ -74,7 +80,7 @@ public class HttpTemperatureRetriever {
         builder.setSslcontext(sslContext);
 
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        Credentials credentials = new UsernamePasswordCredentials("temperature", "tempAC2014!");
+        Credentials credentials = new UsernamePasswordCredentials(p.getHttpTemperatureBasicauthUsername(), p.getHttpTemperatureBasicauthPassword());
         AuthScope authScope = AuthScope.ANY;
         credentialsProvider.setCredentials(authScope, credentials);
         builder.setDefaultCredentialsProvider(credentialsProvider);
