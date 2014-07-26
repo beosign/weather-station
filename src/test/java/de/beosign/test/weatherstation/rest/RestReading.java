@@ -6,13 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,28 +15,27 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import de.beosign.test.weatherstation.common.JUnitUtil;
 import de.beosign.test.weatherstation.common.TemperatureUtil;
-import de.beosign.weatherstation.Application;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
-import de.beosign.weatherstation.spring.SpringProfiles;
 
-public class RestReading {
-    private static ConfigurableApplicationContext context;
-
-    @BeforeClass
-    public static void setup() {
-        Logger logger = LoggerFactory.getLogger(RestReading.class);
-        SpringApplicationBuilder sb = new SpringApplicationBuilder(Application.class).profiles(SpringProfiles.PROFILE_DEV);
-        context = sb.application().run();
-        logger.debug("Profiles: " + Arrays.toString(context.getEnvironment().getActiveProfiles()));
-
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        context.close();
-    }
+public class RestReading extends JUnitUtil {
+    // private static ConfigurableApplicationContext context;
+    // private static final Logger LOGGER = LoggerFactory.getLogger(RestReading.class);
+    //
+    // @BeforeClass
+    // public static void setup() {
+    // SpringApplicationBuilder sb = new SpringApplicationBuilder(Application.class).profiles(SpringProfiles.PROFILE_DEV);
+    // context = sb.application().run();
+    // LOGGER.info("Profiles: " + Arrays.toString(context.getEnvironment().getActiveProfiles()));
+    //
+    // }
+    //
+    // @AfterClass
+    // public static void tearDown() {
+    // context.close();
+    // }
 
     @Test
     public void callServlet() {
@@ -65,12 +58,12 @@ public class RestReading {
 
         ResponseEntity<TemperatureReading> entity = template.getForEntity("http://localhost:8080/temperaturereadings/" + tr.getId(), TemperatureReading.class);
 
-        System.out.println(entity);
+        LOGGER.info(entity.toString());
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         tr = entity.getBody();
 
-        System.out.println("The temperature reading is " + tr);
+        LOGGER.info("The temperature reading is " + tr);
 
     }
 }
