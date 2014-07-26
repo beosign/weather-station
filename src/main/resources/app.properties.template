@@ -1,4 +1,0 @@
-http.baseurl=https://ip:port
-http.temperature.context=/temp
-http.temperature.basicauth.username=user
-http.temperature.basicauth.password=pass

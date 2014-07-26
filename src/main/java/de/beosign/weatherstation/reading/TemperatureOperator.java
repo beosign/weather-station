@@ -3,12 +3,17 @@ package de.beosign.weatherstation.reading;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import de.beosign.weatherstation.retrieve.RetrieveException;
 import de.beosign.weatherstation.retrieve.TemperatureRetriever;
 
-@Configuration
+@EnableAsync
+@EnableScheduling
+@Component
 public class TemperatureOperator {
     private static final Logger LOGGER = LoggerFactory.getLogger(TemperatureOperator.class);
 
@@ -18,6 +23,7 @@ public class TemperatureOperator {
     @Autowired
     private TemperatureReadingRepository temperatureReadingRepository;
 
+    @Scheduled(fixedDelayString = "${temperature.queryinterval}")
     public void readAndStoreTemperature() {
         Double temp;
         try {

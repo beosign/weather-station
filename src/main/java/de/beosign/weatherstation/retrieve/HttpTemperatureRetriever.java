@@ -43,7 +43,6 @@ public class HttpTemperatureRetriever implements TemperatureRetriever {
 
         Double temp;
         try (CloseableHttpClient httpClient = createHttpClient()) {
-
             temp = Double.NaN;
             HttpGet get = new HttpGet(p.getHttpBaseurl() + p.getHttpTemperatureContext());
             try (CloseableHttpResponse r = httpClient.execute(get)) {

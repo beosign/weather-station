@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@PropertySources({ @PropertySource("classpath:/app.properties") })
+@PropertySources({ @PropertySource("classpath:/application.properties") })
 public class AppProperties {
 
     @Autowired
