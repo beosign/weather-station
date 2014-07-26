@@ -68,7 +68,7 @@ public class JPATemperatureReading {
 
         tempReads.forEach(System.out::println);
         Assert.assertTrue("Read all failed", tempReads != null);
-        Assert.assertTrue("Size must be 2", tempReads.size() == 2);
+        Assert.assertTrue("Size must be > 0", tempReads.size() > 0);
 
     }
 

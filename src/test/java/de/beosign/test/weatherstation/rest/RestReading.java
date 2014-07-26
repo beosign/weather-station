@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +25,7 @@ import de.beosign.test.weatherstation.common.TemperatureUtil;
 import de.beosign.weatherstation.Application;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
+import de.beosign.weatherstation.spring.SpringProfiles;
 
 public class RestReading {
     private static ConfigurableApplicationContext context;
@@ -32,20 +33,10 @@ public class RestReading {
     @BeforeClass
     public static void setup() {
         Logger logger = LoggerFactory.getLogger(RestReading.class);
+        SpringApplicationBuilder sb = new SpringApplicationBuilder(Application.class).profiles(SpringProfiles.PROFILE_DEV);
+        context = sb.application().run();
+        logger.debug("Profiles: " + Arrays.toString(context.getEnvironment().getActiveProfiles()));
 
-        context = SpringApplication.run(Application.class);
-        logger.info("Let's inspect the beans provided by Spring Boot:");
-
-        String[] beanNames = context.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-        for (String beanName : beanNames) {
-            System.out.println(beanName);
-        }
-
-        TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
-
-        TemperatureReading tr = TemperatureUtil.createTemperatureReading();
-        repository.save(tr);
     }
 
     @AfterClass
@@ -55,6 +46,11 @@ public class RestReading {
 
     @Test
     public void callServlet() {
+        TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
+
+        TemperatureReading tr = TemperatureUtil.createTemperatureReading();
+        repository.save(tr);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -67,12 +63,12 @@ public class RestReading {
         template.setMessageConverters(messageConverters);
         // HttpEntity<String> requestEntity = new HttpEntity<String>(RestDataFixture.standardOrderJSON(), headers);
 
-        ResponseEntity<TemperatureReading> entity = template.getForEntity("http://localhost:8080/temperaturereadings/1", TemperatureReading.class);
+        ResponseEntity<TemperatureReading> entity = template.getForEntity("http://localhost:8080/temperaturereadings/" + tr.getId(), TemperatureReading.class);
 
         System.out.println(entity);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
-        TemperatureReading tr = entity.getBody();
+        tr = entity.getBody();
 
         System.out.println("The temperature reading is " + tr);
 
