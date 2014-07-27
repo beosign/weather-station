@@ -1,0 +1,2 @@
+# Override for DEV environment
+http.temperature.query_interval=5000

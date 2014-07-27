@@ -22,7 +22,7 @@ public class PropertyFileDataSourceConfig implements DataSourceConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName(p.getDriverClassName());
-        dataSource.setUrl(p.getDbUrl());
+        dataSource.setUrl(p.getUrl());
         dataSource.setUsername(p.getUsername());
         dataSource.setPassword(p.getPassword());
 

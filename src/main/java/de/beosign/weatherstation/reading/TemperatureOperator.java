@@ -23,7 +23,7 @@ public class TemperatureOperator {
     @Autowired
     private TemperatureReadingRepository temperatureReadingRepository;
 
-    @Scheduled(fixedDelayString = "${temperature.queryinterval}")
+    @Scheduled(fixedDelayString = "${http.temperature.query_interval}")
     public void readAndStoreTemperature() {
         Double temp;
         try {

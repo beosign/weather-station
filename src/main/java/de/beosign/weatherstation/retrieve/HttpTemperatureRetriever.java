@@ -26,14 +26,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.beosign.weatherstation.properties.AppProperties;
+import de.beosign.weatherstation.properties.HttpProperties;
 
 @Component
 public class HttpTemperatureRetriever implements TemperatureRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpTemperatureRetriever.class);
 
     @Autowired
-    private AppProperties p;
+    private HttpProperties p;
 
     /* (non-Javadoc)
      * @see de.beosign.weatherstation.reading.TemperatureRetriever#retrieveTemperature()
@@ -44,7 +44,7 @@ public class HttpTemperatureRetriever implements TemperatureRetriever {
         Double temp;
         try (CloseableHttpClient httpClient = createHttpClient()) {
             temp = Double.NaN;
-            HttpGet get = new HttpGet(p.getHttpBaseurl() + p.getHttpTemperatureContext());
+            HttpGet get = new HttpGet(p.getBaseurl() + p.getTemperature().getContext());
             try (CloseableHttpResponse r = httpClient.execute(get)) {
                 String strTemp = IOUtils.toString(r.getEntity().getContent());
                 temp = Double.valueOf(strTemp);
@@ -85,7 +85,8 @@ public class HttpTemperatureRetriever implements TemperatureRetriever {
         builder.setSslcontext(sslContext);
 
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        Credentials credentials = new UsernamePasswordCredentials(p.getHttpTemperatureBasicauthUsername(), p.getHttpTemperatureBasicauthPassword());
+        Credentials credentials = new UsernamePasswordCredentials(p.getTemperature().getBasicauth().getUsername(), p.getTemperature().getBasicauth()
+                .getPassword());
         AuthScope authScope = AuthScope.ANY;
         credentialsProvider.setCredentials(authScope, credentials);
         builder.setDefaultCredentialsProvider(credentialsProvider);

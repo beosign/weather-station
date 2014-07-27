@@ -1,43 +1,56 @@
 package de.beosign.weatherstation.properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@PropertySources({ @PropertySource("classpath:/database.properties") })
+@ConfigurationProperties(prefix = "spring.datasource")
 public class DatabaseProperties {
     @Autowired
     private Environment env;
 
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
-
-    @Value("${spring.datasource.username}")
+    private String url;
     private String username;
-
-    @Value("${spring.datasource.password}")
     private String password;
-
-    @Value("${spring.datasource.driverClassName}")
     private String driverClassName;
 
-    public String getDbUrl() {
-        return dbUrl;
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getDriverClassName() {
         return driverClassName;
     }
+
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
+    }
+
+    @Override
+    public String toString() {
+        return "DatabaseProperties [url=" + url + ", username=" + username + ", password=" + password + ", driverClassName=" + driverClassName + "]";
+    }
+
 }
