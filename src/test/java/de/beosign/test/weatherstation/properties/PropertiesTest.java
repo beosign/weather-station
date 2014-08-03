@@ -1,5 +1,6 @@
 package de.beosign.test.weatherstation.properties;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import de.beosign.test.weatherstation.common.JUnitUtil;
@@ -11,17 +12,18 @@ public class PropertiesTest extends JUnitUtil {
     @Test
     public void testDatabase() {
         DatabaseProperties p = context.getBean(DatabaseProperties.class);
-        System.out.println(p.getDriverClassName());
-        System.out.println(p.getUrl());
-        System.out.println(p.getUsername());
+        System.out.println(p);
+
+        Assert.assertNotNull(p);
+
     }
 
     @Test
     public void testHttp() {
         HttpProperties httpProperties = context.getBean(HttpProperties.class);
-        System.out.println(httpProperties.getBaseurl());
-        System.out.println(httpProperties.getTemperature().getContext());
-        System.out.println(httpProperties.getTemperature().getBasicauth().getUsername());
-        System.out.println(httpProperties.getTemperature().getBasicauth().getPassword());
+        System.out.println(httpProperties);
+
+        Assert.assertNotNull(httpProperties);
+
     }
 }
