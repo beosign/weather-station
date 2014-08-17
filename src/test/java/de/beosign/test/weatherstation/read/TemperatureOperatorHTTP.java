@@ -6,36 +6,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
-import de.beosign.weatherstation.Application;
+import de.beosign.test.weatherstation.common.JUnitUtil;
 import de.beosign.weatherstation.reading.TemperatureOperator;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
 
-public class TemperatureOperatorHTTP {
-    private static ConfigurableApplicationContext context;
-    private static TemperatureOperator temperatureOperator;
+public class TemperatureOperatorHTTP extends JUnitUtil {
+    private TemperatureOperator temperatureOperator;
 
-    @BeforeClass
-    public static void setup() {
-        context = SpringApplication.run(Application.class);
-        temperatureOperator = context.getBean(TemperatureOperator.class);
-
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        context.close();
-    }
-
-    @Test
     public void readTempHttp() throws KeyManagementException, NoSuchAlgorithmException, IOException {
+        temperatureOperator = context.getBean(TemperatureOperator.class);
         Date fromDate = new Date(new Date().getTime() - 10000);
         Assert.assertNotNull(temperatureOperator);
 

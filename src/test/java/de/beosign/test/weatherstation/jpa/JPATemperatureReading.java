@@ -3,32 +3,15 @@ package de.beosign.test.weatherstation.jpa;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
+import de.beosign.test.weatherstation.common.JUnitUtil;
 import de.beosign.test.weatherstation.common.TemperatureUtil;
-import de.beosign.weatherstation.Application;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
 
-public class JPATemperatureReading {
-    private static ConfigurableApplicationContext context;
-
-    @BeforeClass
-    public static void setup() {
-        context = SpringApplication.run(Application.class);
-
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        context.close();
-
-    }
+public class JPATemperatureReading extends JUnitUtil {
 
     @Test
     public void saveTemperatureReading() {
