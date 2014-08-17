@@ -6,16 +6,15 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 import de.beosign.weatherstation.Application;
-import de.beosign.weatherstation.spring.SpringProfiles;
 
 public class WeatherStationServletInitializer extends SpringBootServletInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherStationServletInitializer.class);
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        SpringApplicationBuilder b = application.sources(Application.class).profiles(SpringProfiles.PROFILE_PROD);
+        SpringApplicationBuilder b = application.sources(Application.class);
 
-        LOGGER.debug("Set active Spring profile to " + SpringProfiles.PROFILE_PROD);
+        // LOGGER.debug("Active profiles: " + Arrays.deepToString(b.context().getEnvironment().getActiveProfiles()));
 
         return b;
     }
