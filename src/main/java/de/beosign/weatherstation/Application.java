@@ -1,5 +1,7 @@
 package de.beosign.weatherstation;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -25,6 +27,7 @@ public class Application {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
         LOGGER.debug("Application started");
+        LOGGER.info("Profiles: " + Arrays.toString(ctx.getEnvironment().getActiveProfiles()));
 
         LOGGER.info("HTTP Properties: " + ctx.getBean(HttpProperties.class));
         LOGGER.info("Datasource Properties" + ctx.getBean(DatabaseProperties.class));
