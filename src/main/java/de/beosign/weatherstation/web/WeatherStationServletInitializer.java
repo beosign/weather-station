@@ -15,16 +15,19 @@ import de.beosign.weatherstation.properties.DatabaseProperties;
 import de.beosign.weatherstation.properties.HttpProperties;
 
 /**
- * This class is used when running in a seperate servlet container like TOMCAT.
- * The {@link #configure(SpringApplicationBuilder)} method will be called first.
- * The {@link #createRootApplicationContext(ServletContext)} will be called when the application has
- * initialized.
+ * This class is used when running in a separate servlet container like TOMCAT.
  * 
  * @author Florian Dahlmanns
  */
 public class WeatherStationServletInitializer extends SpringBootServletInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherStationServletInitializer.class);
 
+    /**
+     * Called before the application is started. You could set a profile here, for example.
+     *
+     * @param application the application
+     * @return the spring application builder
+     */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         LOGGER.debug("Creating Spring Web Application");
@@ -33,6 +36,12 @@ public class WeatherStationServletInitializer extends SpringBootServletInitializ
         return b;
     }
 
+    /**
+     * Called after the application is initialized.
+     *
+     * @param servletContext the servlet context
+     * @return the web application context
+     */
     @Override
     protected WebApplicationContext createRootApplicationContext(ServletContext servletContext) {
         WebApplicationContext ctx = super.createRootApplicationContext(servletContext);
