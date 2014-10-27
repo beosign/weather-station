@@ -1,8 +1,9 @@
 package de.beosign.weatherstation.retrieve;
 
-
-public interface TemperatureRetriever {
-
-    Double retrieve() throws RetrieveException;
-
+/**
+ * Retrieves a temperature.
+ * 
+ * @author Florian Dahlmanns
+ */
+public interface TemperatureRetriever extends Retriever<Double> {
 }

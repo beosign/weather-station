@@ -28,6 +28,9 @@ import org.springframework.stereotype.Component;
 
 import de.beosign.weatherstation.properties.HttpProperties;
 
+/**
+ * A temperature retriever that uses HTTP to get the temperature value.
+ */
 @Component
 public class HttpTemperatureRetriever implements TemperatureRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpTemperatureRetriever.class);
@@ -39,7 +42,7 @@ public class HttpTemperatureRetriever implements TemperatureRetriever {
      * @see de.beosign.weatherstation.reading.TemperatureRetriever#retrieveTemperature()
      */
     @Override
-    public Double retrieve() throws RetrieveException {
+    public Double retrieve() {
 
         Double temp;
         try (CloseableHttpClient httpClient = createHttpClient()) {
@@ -58,6 +61,13 @@ public class HttpTemperatureRetriever implements TemperatureRetriever {
 
     }
 
+    /**
+     * Creates a http client that accepts all certificates.
+     *
+     * @return http client
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws KeyManagementException the key management exception
+     */
     private CloseableHttpClient createHttpClient() throws NoSuchAlgorithmException, KeyManagementException {
         HttpClientBuilder builder = HttpClientBuilder.create();
 
