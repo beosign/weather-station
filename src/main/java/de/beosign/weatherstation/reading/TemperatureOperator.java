@@ -3,7 +3,6 @@ package de.beosign.weatherstation.reading;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 import de.beosign.weatherstation.retrieve.RetrieveException;
 import de.beosign.weatherstation.retrieve.TemperatureRetriever;
 
-@EnableAsync
 @EnableScheduling
 @Component
 public class TemperatureOperator {
