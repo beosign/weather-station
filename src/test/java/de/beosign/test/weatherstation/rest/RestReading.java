@@ -21,22 +21,6 @@ import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
 
 public class RestReading extends JUnitUtil {
-    // private static ConfigurableApplicationContext context;
-    // private static final Logger LOGGER = LoggerFactory.getLogger(RestReading.class);
-    //
-    // @BeforeClass
-    // public static void setup() {
-    // SpringApplicationBuilder sb = new SpringApplicationBuilder(Application.class).profiles(SpringProfiles.PROFILE_DEV);
-    // context = sb.application().run();
-    // LOGGER.info("Profiles: " + Arrays.toString(context.getEnvironment().getActiveProfiles()));
-    //
-    // }
-    //
-    // @AfterClass
-    // public static void tearDown() {
-    // context.close();
-    // }
-
     @Test
     public void callServlet() {
         TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
