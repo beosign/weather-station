@@ -12,6 +12,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import de.beosign.test.weatherstation.rest.RestReading;
 import de.beosign.weatherstation.Application;
+import de.beosign.weatherstation.properties.DatabaseProperties;
+import de.beosign.weatherstation.properties.HttpProperties;
 import de.beosign.weatherstation.spring.SpringProfiles;
 
 /**
@@ -28,6 +30,9 @@ public class JUnitUtil {
         SpringApplicationBuilder sb = new SpringApplicationBuilder(Application.class).profiles(SpringProfiles.PROFILE_DEV);
         context = sb.application().run();
         LOGGER.info("Profiles: " + Arrays.toString(context.getEnvironment().getActiveProfiles()));
+
+        LOGGER.info("HTTP Properties: " + context.getBean(HttpProperties.class));
+        LOGGER.info("Datasource Properties" + context.getBean(DatabaseProperties.class));
 
     }
 

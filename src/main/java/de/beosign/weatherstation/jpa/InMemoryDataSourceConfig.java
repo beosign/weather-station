@@ -3,14 +3,10 @@ package de.beosign.weatherstation.jpa;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import de.beosign.weatherstation.spring.Development;
-
-@Configuration
-@Development
+//@Configuration
 public class InMemoryDataSourceConfig implements DataSourceConfig {
 
     @Override
