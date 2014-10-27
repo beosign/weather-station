@@ -23,6 +23,9 @@ jar {
     baseName = 'weatherstation'
 }
 
+run {
+    systemProperty "spring.profiles.active", "dev"
+}
 
 repositories {
     mavenLocal()
