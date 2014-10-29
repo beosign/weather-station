@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Assert;
 
 import de.beosign.test.weatherstation.common.JUnitUtil;
-import de.beosign.weatherstation.reading.TemperatureOperator;
+import de.beosign.weatherstation.operator.TemperatureOperator;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
 
