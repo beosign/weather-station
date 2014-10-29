@@ -1,11 +1,10 @@
 package de.beosign.weatherstation.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@ConfigurationProperties(prefix = "http")
-@Component
-public class HttpProperties {
+@Configuration
+public abstract class HttpProperties {
     private String baseurl;
 
     private Temperature temperature;
