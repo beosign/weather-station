@@ -13,8 +13,6 @@ import de.beosign.weatherstation.sensor.Sensor;
 @EnableScheduling
 @Component
 public class LivingRoomTemperatureOperator extends TemperatureOperator {
-    private Sensor sensor;
-
     @Autowired
     private LivingRoomHttpTemperatureRetriever temperatureReader;
 
@@ -35,10 +33,7 @@ public class LivingRoomTemperatureOperator extends TemperatureOperator {
 
     @Override
     protected Sensor getTemperatureSensor() {
-        if (sensor == null) {
-            sensor = new Sensor(sensorProperties.getName(), sensorProperties.getDescription());
-        }
-        return sensor;
+        return new Sensor(sensorProperties.getName(), sensorProperties.getDescription());
     }
 
 }

@@ -2,8 +2,10 @@ package de.beosign.weatherstation.operator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
@@ -11,8 +13,13 @@ import de.beosign.weatherstation.retrieve.TemperatureRetriever;
 import de.beosign.weatherstation.sensor.Sensor;
 import de.beosign.weatherstation.sensor.SensorRepository;
 
+/**
+ * All Temperature Operators (classes that read a temperature and store the result) should extend this class.
+ * 
+ * @author Florian Dahlmanns
+ */
 @EnableScheduling
-public abstract class TemperatureOperator {
+public abstract class TemperatureOperator implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(TemperatureOperator.class);
     private Sensor sensor;
 
@@ -22,30 +29,52 @@ public abstract class TemperatureOperator {
     @Autowired
     private SensorRepository sensorRepository;
 
+    /**
+     * Save the sensor first because it must exist before saving any reading referencing this sensor.
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        sensor = getTemperatureSensor();
+        sensor = sensorRepository.save(getTemperatureSensor());
+    }
+
+    /**
+     * Returns the concrete {@link TemperatureRetriever} instance used to retrieve the temperature
+     * 
+     * @return the concrete {@link TemperatureRetriever} instance
+     */
     protected abstract TemperatureRetriever getTemperatureRetriever();
 
+    /**
+     * Returns the sensor where the temperature is read from.
+     * 
+     * @return sensor
+     */
     protected abstract Sensor getTemperatureSensor();
 
+    /**
+     * Classes must implement this method and annotate it with {@link Scheduled} such that this method is called regularly. They must simply call
+     * {@link #readAndStoreTemperature()}.
+     * This is a workaround to be able to provide a variable schdeule expression read from a property file as an annotation value must have a constant
+     * expression.
+     */
     protected abstract void readAndStoreScheduled();
 
+    /**
+     * Called by subclasses in {@link #readAndStoreScheduled()}. Reads temperature and stores result.
+     */
     public void readAndStoreTemperature() {
-        Double temp;
-        temp = getTemperatureRetriever().retrieve();
+        Double temp = getTemperatureRetriever().retrieve();
+        TemperatureReading tr = new TemperatureReading(temp, sensor);
 
-        if (sensor == null) {
-            sensor = sensorRepository.save(getTemperatureSensor());
-        }
-
-        TemperatureReading tr = null;
-        tr = new TemperatureReading(temp, sensor);
         temperatureReadingRepository.save(tr);
 
     }
 
-    // @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")
-    // protected void readTemperatures() {
-    // temperatureReadingRepository.findAll().forEach(s -> LOGGER.debug("DEBUG-READING: " + s.toString()));
-    //
-    // }
+    @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")
+    protected void readTemperatures() {
+        temperatureReadingRepository.findAll().forEach(s -> LOGGER.debug("DEBUG-READING: " + s.toString()));
+
+    }
 
 }
