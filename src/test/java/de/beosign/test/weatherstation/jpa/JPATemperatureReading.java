@@ -1,5 +1,6 @@
 package de.beosign.test.weatherstation.jpa;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,40 +11,59 @@ import de.beosign.test.weatherstation.common.JUnitUtil;
 import de.beosign.test.weatherstation.common.TemperatureUtil;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
+import de.beosign.weatherstation.sensor.Sensor;
+import de.beosign.weatherstation.sensor.SensorRepository;
 
 public class JPATemperatureReading extends JUnitUtil {
 
     @Test
     public void saveTemperatureReading() {
         TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
+        SensorRepository sensorRepository = context.getBean(SensorRepository.class);
 
         TemperatureReading tr = TemperatureUtil.createTemperatureReading();
+        sensorRepository.save(tr.getSensor());
         repository.save(tr);
 
     }
 
     @Test
-    public void getReading() {
+    public void saveTwoReadingsForSameSensorTest() {
         TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
+        SensorRepository sensorRepository = context.getBean(SensorRepository.class);
 
+        Sensor s = new Sensor("sensor", "asd");
         TemperatureReading tr = TemperatureUtil.createTemperatureReading();
+        sensorRepository.save(s);
+        tr.setSensor(s);
         repository.save(tr);
 
-        TemperatureReading tempRead = repository.findOne(tr.getId());
+        TemperatureReading tr2 = TemperatureUtil.createTemperatureReading();
+        // s = sensorRepository.findByName(tr.getSensor().getName());
+        tr2.setSensor(s);
+        repository.save(tr2);
 
-        Assert.assertTrue("Read one failed", tempRead != null);
+        List<TemperatureReading> temperatureReadings = new ArrayList<>();
+        repository.findAll().forEach(temperatureReadings::add);
+
+        Assert.assertTrue("Two readings", repository.count() == 2);
+        Assert.assertTrue("Only one sensor", temperatureReadings.get(0).getSensor().getId() == temperatureReadings.get(1).getSensor().getId());
+
+        System.out.println(temperatureReadings);
 
     }
 
     @Test
     public void getReadingBetween() {
         TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
+        SensorRepository sensorRepository = context.getBean(SensorRepository.class);
 
         TemperatureReading tr = TemperatureUtil.createTemperatureReading();
+        sensorRepository.save(tr.getSensor());
         repository.save(tr);
-        tr = TemperatureUtil.createTemperatureReading(new Date(System.currentTimeMillis() - 1000 * 3600 * 24 * 1));
+        tr = TemperatureUtil.createTemperatureReading(new Date(System.currentTimeMillis() - 1000 * 3600 * 24 * 1), tr.getSensor());
         repository.save(tr);
-        tr = TemperatureUtil.createTemperatureReading(new Date(System.currentTimeMillis() - 1000 * 3600 * 24 * 2));
+        tr = TemperatureUtil.createTemperatureReading(new Date(System.currentTimeMillis() - 1000 * 3600 * 24 * 2), tr.getSensor());
         repository.save(tr);
 
         List<TemperatureReading> tempReads = repository.findByReadDateBetween(new Date((long) (System.currentTimeMillis() - 1000 * 3600 * 24 * 1.5)), new Date(

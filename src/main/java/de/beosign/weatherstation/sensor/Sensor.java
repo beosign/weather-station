@@ -67,4 +67,37 @@ public class Sensor extends JPAEntity {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "Sensor [name=" + name + ", description=" + description + ", getId()=" + getId() + ", getVersion()=" + getVersion() + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    /**
+     * Sensors are equal if their names match. This is important to JPA as existence is checked with {@link #equals(Object)}.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Sensor other = (Sensor) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
+    }
+
 }

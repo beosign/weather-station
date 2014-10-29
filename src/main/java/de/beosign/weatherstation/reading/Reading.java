@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.springframework.data.repository.CrudRepository;
+
 import de.beosign.weatherstation.jpa.JPAEntity;
 import de.beosign.weatherstation.sensor.Sensor;
 
@@ -96,11 +98,12 @@ public abstract class Reading<T> extends JPAEntity {
     }
 
     /**
-     * Gets the sensor.
+     * Gets the sensor. There is no {@link CascadeType} defined here as this made it impossible to use the simple {@link CrudRepository} for storing a
+     * temperature reading when the sensor already existed (error: detached entity cannot be persisted)
      *
      * @return the sensor
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     public Sensor getSensor() {
         return sensor;
     }
