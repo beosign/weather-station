@@ -19,13 +19,16 @@ import de.beosign.test.weatherstation.common.JUnitUtil;
 import de.beosign.test.weatherstation.common.TemperatureUtil;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
+import de.beosign.weatherstation.sensor.SensorRepository;
 
 public class RestReading extends JUnitUtil {
     @Test
     public void callServlet() {
         TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
+        SensorRepository sensorRepository = context.getBean(SensorRepository.class);
 
         TemperatureReading tr = TemperatureUtil.createTemperatureReading();
+        sensorRepository.save(tr.getSensor());
         repository.save(tr);
 
         HttpHeaders headers = new HttpHeaders();

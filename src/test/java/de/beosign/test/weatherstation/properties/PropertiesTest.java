@@ -6,6 +6,7 @@ import org.junit.Test;
 import de.beosign.test.weatherstation.common.JUnitUtil;
 import de.beosign.weatherstation.properties.DatabaseProperties;
 import de.beosign.weatherstation.properties.HttpProperties;
+import de.beosign.weatherstation.properties.LivingRoomHttpProperties;
 
 public class PropertiesTest extends JUnitUtil {
 
@@ -19,8 +20,8 @@ public class PropertiesTest extends JUnitUtil {
     }
 
     @Test
-    public void testHttp() {
-        HttpProperties httpProperties = context.getBean(HttpProperties.class);
+    public void testHttpLR() {
+        HttpProperties httpProperties = context.getBean(LivingRoomHttpProperties.class);
         System.out.println(httpProperties);
 
         Assert.assertNotNull(httpProperties);
