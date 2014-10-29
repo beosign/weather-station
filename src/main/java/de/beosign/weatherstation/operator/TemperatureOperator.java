@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
@@ -43,10 +42,10 @@ public abstract class TemperatureOperator {
 
     }
 
-    @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")
-    protected void readTemperatures() {
-        temperatureReadingRepository.findAll().forEach(s -> LOGGER.debug("DEBUG-READING: " + s.toString()));
-
-    }
+    // @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")
+    // protected void readTemperatures() {
+    // temperatureReadingRepository.findAll().forEach(s -> LOGGER.debug("DEBUG-READING: " + s.toString()));
+    //
+    // }
 
 }
