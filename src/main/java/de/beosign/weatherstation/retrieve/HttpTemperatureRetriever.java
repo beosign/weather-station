@@ -23,7 +23,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import de.beosign.weatherstation.properties.HttpProperties;
@@ -32,11 +32,18 @@ import de.beosign.weatherstation.properties.HttpProperties;
  * A temperature retriever that uses HTTP to get the temperature value.
  */
 @Component
-public class HttpTemperatureRetriever implements TemperatureRetriever {
+public abstract class HttpTemperatureRetriever implements TemperatureRetriever, InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpTemperatureRetriever.class);
 
-    @Autowired
-    private HttpProperties p;
+    private HttpProperties httpProperties;
+
+    protected abstract HttpProperties getHttpProperties();
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        httpProperties = getHttpProperties();
+
+    }
 
     /* (non-Javadoc)
      * @see de.beosign.weatherstation.reading.TemperatureRetriever#retrieveTemperature()
@@ -47,7 +54,7 @@ public class HttpTemperatureRetriever implements TemperatureRetriever {
         Double temp;
         try (CloseableHttpClient httpClient = createHttpClient()) {
             temp = Double.NaN;
-            HttpGet get = new HttpGet(p.getBaseurl() + p.getTemperature().getContext());
+            HttpGet get = new HttpGet(httpProperties.getBaseurl() + httpProperties.getTemperature().getContext());
             try (CloseableHttpResponse r = httpClient.execute(get)) {
                 String strTemp = IOUtils.toString(r.getEntity().getContent());
                 temp = Double.valueOf(strTemp);
@@ -95,8 +102,8 @@ public class HttpTemperatureRetriever implements TemperatureRetriever {
         builder.setSslcontext(sslContext);
 
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        Credentials credentials = new UsernamePasswordCredentials(p.getTemperature().getBasicauth().getUsername(), p.getTemperature().getBasicauth()
-                .getPassword());
+        Credentials credentials = new UsernamePasswordCredentials(httpProperties.getTemperature().getBasicauth().getUsername(), httpProperties.getTemperature()
+                .getBasicauth().getPassword());
         AuthScope authScope = AuthScope.ANY;
         credentialsProvider.setCredentials(authScope, credentials);
         builder.setDefaultCredentialsProvider(credentialsProvider);
