@@ -13,8 +13,7 @@ public final class TemperatureUtil {
         // save a couple of customers
         Sensor s = new Sensor("LR-1", "Living Room 1");
 
-        TemperatureReading tr = new TemperatureReading(13.5);
-        tr.setSensor(s);
+        TemperatureReading tr = new TemperatureReading(13.5, s);
 
         return tr;
     }
@@ -26,6 +25,13 @@ public final class TemperatureUtil {
         TemperatureReading tr = new TemperatureReading(13.5);
         tr.setReadDate(date);
         tr.setSensor(s);
+
+        return tr;
+    }
+
+    public static TemperatureReading createTemperatureReading(Date date, Sensor sensor) {
+        TemperatureReading tr = new TemperatureReading(13.5, sensor);
+        tr.setReadDate(date);
 
         return tr;
     }
