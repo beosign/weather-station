@@ -10,10 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import de.beosign.weatherstation.properties.DatabaseProperties;
-import de.beosign.weatherstation.spring.Production;
 
 @Configuration
-@Production
 public class PropertyFileDataSourceConfig implements DataSourceConfig {
     @Autowired
     private DatabaseProperties p;
