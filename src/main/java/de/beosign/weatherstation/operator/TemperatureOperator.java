@@ -71,10 +71,10 @@ public abstract class TemperatureOperator implements InitializingBean {
 
     }
 
-    @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")
-    protected void readTemperatures() {
-        temperatureReadingRepository.findAll().forEach(s -> LOGGER.debug("DEBUG-READING: " + s.toString()));
-
-    }
+    // @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")
+    // protected void readTemperatures() {
+    // temperatureReadingRepository.findAll().forEach(s -> LOGGER.debug("DEBUG-READING: " + s.toString()));
+    //
+    // }
 
 }
