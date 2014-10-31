@@ -35,8 +35,14 @@ public abstract class TemperatureOperator implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        sensor = getTemperatureSensor();
-        sensor = sensorRepository.save(getTemperatureSensor());
+        Sensor transientSensor = getTemperatureSensor();
+        sensor = sensorRepository.findByName(transientSensor.getName());
+        if (sensor == null) {
+            LOGGER.info("No sensor named {} found, creating sensor", transientSensor.getName());
+            sensor = sensorRepository.save(transientSensor);
+        } else {
+            LOGGER.info("Sensor named {} found, using existing sensor", sensor.getName());
+        }
     }
 
     /**
