@@ -10,6 +10,11 @@ import de.beosign.weatherstation.retrieve.LivingRoomHttpTemperatureRetriever;
 import de.beosign.weatherstation.retrieve.TemperatureRetriever;
 import de.beosign.weatherstation.sensor.Sensor;
 
+/**
+ * Reads and the stores the temperature in the living room.
+ * 
+ * @author Florian Dahlmanns
+ */
 @EnableScheduling
 @Component
 public class LivingRoomTemperatureOperator extends TemperatureOperator {

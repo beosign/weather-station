@@ -67,7 +67,7 @@ public class JPATemperatureReading extends JUnitUtil {
         repository.save(tr);
 
         List<TemperatureReading> tempReads = repository.findByReadDateBetween(new Date((long) (System.currentTimeMillis() - 1000 * 3600 * 24 * 1.5)), new Date(
-                System.currentTimeMillis() + 1000000));
+                System.currentTimeMillis() + 1000 * 1000));
 
         tempReads.forEach(System.out::println);
         Assert.assertTrue("Read all failed", tempReads != null);

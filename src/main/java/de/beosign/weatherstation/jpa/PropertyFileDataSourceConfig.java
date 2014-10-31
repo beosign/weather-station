@@ -11,14 +11,19 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import de.beosign.weatherstation.properties.DatabaseProperties;
 
+/**
+ * Creates datasource from {@link DatabaseProperties} instance.
+ * 
+ * @author Florian Dahlmanns
+ */
 @Configuration
 public class PropertyFileDataSourceConfig implements DataSourceConfig {
     @Autowired
     private DatabaseProperties p;
 
-    @SuppressWarnings("unchecked")
-    @Override
     @Bean
+    @Override
+    @SuppressWarnings("unchecked")
     public DataSource dataSource() throws DataSourceConfigException {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 

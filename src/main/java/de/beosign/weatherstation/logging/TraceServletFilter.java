@@ -29,13 +29,17 @@ import de.beosign.weatherstation.Application;
 /**
  * Servlet filter for logging request and response payloads as TRACE log. Also measures time spent for the request to complete.
  * 
- * @author florian
+ * @author Florian Dahlmanns
  */
 public final class TraceServletFilter extends AbstractRequestLoggingFilter {
+    private static final int COUNTER_MODULUS = 10000;
     private static final String MDC_REQID = "REQID";
     private static final AtomicLong REQ_COUNTER = new AtomicLong();
     private static final Logger LOGGER = LoggerFactory.getLogger(TraceServletFilter.class);
 
+    /**
+     * Sets logging options: include client info and query string while logging.
+     */
     public TraceServletFilter() {
         setIncludeClientInfo(true);
         setIncludeQueryString(true);
@@ -56,7 +60,7 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
         String perfLogMessage = " From " + request.getRemoteAddr() + ", uri = " + request.getRequestURI();
         StopWatch sw = Application.getStopWatchFactory().getStopWatch();
 
-        MDC.put(MDC_REQID, REQ_COUNTER.incrementAndGet() % 10000);
+        MDC.put(MDC_REQID, REQ_COUNTER.incrementAndGet() % COUNTER_MODULUS);
 
         ByteArrayOutputStream responseBaos = new ByteArrayOutputStream();
         ByteArrayOutputStream requestBaos = new ByteArrayOutputStream();

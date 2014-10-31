@@ -37,6 +37,11 @@ public abstract class HttpTemperatureRetriever implements TemperatureRetriever, 
 
     private HttpProperties httpProperties;
 
+    /**
+     * Subclasses must return their properties.
+     * 
+     * @return properties
+     */
     protected abstract HttpProperties getHttpProperties();
 
     @Override

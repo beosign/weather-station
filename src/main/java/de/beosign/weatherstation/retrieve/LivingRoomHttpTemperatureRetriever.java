@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 import de.beosign.weatherstation.properties.HttpProperties;
 import de.beosign.weatherstation.properties.LivingRoomHttpProperties;
 
+/**
+ * Retrieves temperature in living room.
+ * 
+ * @author Florian Dahlmanns
+ */
 @Component
 public class LivingRoomHttpTemperatureRetriever extends HttpTemperatureRetriever {
 

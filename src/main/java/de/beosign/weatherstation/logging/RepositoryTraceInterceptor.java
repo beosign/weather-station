@@ -7,10 +7,18 @@ import org.springframework.aop.interceptor.CustomizableTraceInterceptor;
 
 import de.beosign.weatherstation.Application;
 
+/**
+ * Custom implementation that uses a SLF4-Logger instead of apache commons logger when tracing calls to methods of a CrudRepository.
+ * 
+ * @author Florian Dahlmanns
+ */
 public class RepositoryTraceInterceptor extends CustomizableTraceInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Sets options: hide proxy class names.
+     */
     public RepositoryTraceInterceptor() {
         setHideProxyClassNames(true);
     }

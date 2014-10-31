@@ -3,7 +3,7 @@ package de.beosign.weatherstation.sensor;
 import org.springframework.data.repository.CrudRepository;
 
 /**
- * CRUD repository for {@link Sensor}s
+ * CRUD repository for {@link Sensor}s.
  * 
  * @author Florian Dahlmanns
  */

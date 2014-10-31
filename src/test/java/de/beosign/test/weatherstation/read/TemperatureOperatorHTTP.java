@@ -18,7 +18,7 @@ public class TemperatureOperatorHTTP extends JUnitUtil {
 
     public void readTempHttp() throws KeyManagementException, NoSuchAlgorithmException, IOException {
         temperatureOperator = context.getBean(TemperatureOperator.class);
-        Date fromDate = new Date(new Date().getTime() - 10000);
+        Date fromDate = new Date(new Date().getTime() - 10 * 1000);
         Assert.assertNotNull(temperatureOperator);
 
         temperatureOperator.readAndStoreTemperature();

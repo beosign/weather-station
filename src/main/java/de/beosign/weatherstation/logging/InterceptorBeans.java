@@ -6,8 +6,18 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Defines beans regarding interception.
+ * 
+ * @author Florian Dahlmanns
+ */
 @Configuration
 public class InterceptorBeans {
+    /**
+     * Creates a repository trace interceptor.
+     * 
+     * @return {@link RepositoryTraceInterceptor} instance
+     */
     @Bean
     public RepositoryTraceInterceptor repositoryTraceInterceptor() {
 
@@ -18,6 +28,11 @@ public class InterceptorBeans {
         return interceptor;
     }
 
+    /**
+     * Creates a repository trace advisor.
+     *
+     * @return repository trace advisor.
+     */
     @Bean
     public Advisor repositoryTraceAdvisor() {
 
@@ -26,4 +41,18 @@ public class InterceptorBeans {
 
         return new DefaultPointcutAdvisor(pointcut, repositoryTraceInterceptor());
     }
+
+    // /**
+    // * Creates a repository trace advisor.
+    // *
+    // * @return repository trace advisor.
+    // */
+    // @Bean
+    // public Advisor mathodTraceAdvisor() {
+    //
+    // AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+    // pointcut.setExpression("execution(* de.beosign..*.*(..))");
+    //
+    // return new DefaultPointcutAdvisor(pointcut, repositoryTraceInterceptor());
+    // }
 }
