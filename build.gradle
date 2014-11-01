@@ -65,6 +65,16 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
 // Does not work yet! Tries to upload both WAR and JAR file
 configurations {
     deployerJars
@@ -72,6 +82,8 @@ configurations {
 
 artifacts {
     archives jar
+    archives sourcesJar
+    archives javadocJar    
 }
 
 uploadArchives {

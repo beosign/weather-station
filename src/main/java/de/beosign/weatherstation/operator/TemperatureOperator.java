@@ -19,9 +19,9 @@ public abstract class TemperatureOperator implements Operator<TemperatureReading
     private TemperatureReadingRepository temperatureReadingRepository;
 
     /**
-     * Classes must implement this method and annotate it with {@link Open Declaration org.springframework.scheduling.annotation.Scheduled} such that this
-     * method is called regularly. They must simply call {@link #readAndStoreTemperature()}.
-     * This is a workaround to be able to provide a variable schdeule expression read from a property file as an annotation value must have a constant
+     * Classes must implement this method and annotate it with {@link org.springframework.scheduling.annotation.Scheduled} such that this
+     * method is called regularly. They must simply call {@link #retrieveAndStore()}.
+     * This is a workaround to be able to provide a variable schedule expression read from a property file as an annotation value must have a constant
      * expression.
      */
     protected abstract void readAndStoreScheduled();

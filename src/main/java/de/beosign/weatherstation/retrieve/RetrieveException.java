@@ -1,7 +1,7 @@
 package de.beosign.weatherstation.retrieve;
 
 /**
- * Thrown to indicate that a retrieval operation from a sensor could not be executed. This exception is usually thrown from a {@link TemperatureRetriever}.
+ * Thrown to indicate that a retrieval operation from a sensor could not be executed. This exception is usually thrown from a {@link Retriever}.
  * 
  * @author Florian Dahlmanns
  */
