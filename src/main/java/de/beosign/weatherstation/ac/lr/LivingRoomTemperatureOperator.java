@@ -1,12 +1,11 @@
-package de.beosign.weatherstation.operator;
+package de.beosign.weatherstation.ac.lr;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import de.beosign.weatherstation.properties.LivingRoomSensorProperties;
-import de.beosign.weatherstation.retrieve.LivingRoomHttpTemperatureRetriever;
+import de.beosign.weatherstation.operator.TemperatureOperator;
 import de.beosign.weatherstation.retrieve.TemperatureRetriever;
 import de.beosign.weatherstation.sensor.Sensor;
 

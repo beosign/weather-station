@@ -4,9 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.beosign.test.weatherstation.common.JUnitUtil;
+import de.beosign.weatherstation.ac.lr.LivingRoomHttpProperties;
 import de.beosign.weatherstation.properties.DatabaseProperties;
 import de.beosign.weatherstation.properties.HttpProperties;
-import de.beosign.weatherstation.properties.LivingRoomHttpProperties;
 
 public class PropertiesTest extends JUnitUtil {
 
