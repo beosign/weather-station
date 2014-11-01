@@ -12,8 +12,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import de.beosign.test.weatherstation.rest.RestReading;
 import de.beosign.weatherstation.Application;
+import de.beosign.weatherstation.ac.lr.LivingRoomHttpProperties;
+import de.beosign.weatherstation.ac.owm.OpenWeatherMapHttpProperties;
 import de.beosign.weatherstation.properties.DatabaseProperties;
-import de.beosign.weatherstation.properties.HttpProperties;
 import de.beosign.weatherstation.spring.SpringProfiles;
 
 /**
@@ -23,7 +24,7 @@ import de.beosign.weatherstation.spring.SpringProfiles;
  */
 public class JUnitUtil {
     protected static final Logger LOGGER = LoggerFactory.getLogger(RestReading.class);
-    protected static ConfigurableApplicationContext context;
+    private static ConfigurableApplicationContext context;
 
     @BeforeClass
     public static void setup() {
@@ -31,7 +32,8 @@ public class JUnitUtil {
         context = sb.application().run();
         LOGGER.info("Profiles: " + Arrays.toString(context.getEnvironment().getActiveProfiles()));
 
-        LOGGER.info("HTTP Properties: " + context.getBean(HttpProperties.class));
+        LOGGER.info("HTTP Properties LR: " + context.getBean(LivingRoomHttpProperties.class));
+        LOGGER.info("HTTP Properties OW: " + context.getBean(OpenWeatherMapHttpProperties.class));
         LOGGER.info("Datasource Properties" + context.getBean(DatabaseProperties.class));
 
     }
@@ -39,5 +41,13 @@ public class JUnitUtil {
     @AfterClass
     public static void tearDown() {
         context.close();
+    }
+
+    protected static Logger getLogger() {
+        return LOGGER;
+    }
+
+    protected static ConfigurableApplicationContext getContext() {
+        return context;
     }
 }

@@ -17,13 +17,13 @@ public class TemperatureOperatorHTTP extends JUnitUtil {
     private TemperatureOperator temperatureOperator;
 
     public void readTempHttp() throws KeyManagementException, NoSuchAlgorithmException, IOException {
-        temperatureOperator = context.getBean(TemperatureOperator.class);
+        temperatureOperator = getContext().getBean(TemperatureOperator.class);
         Date fromDate = new Date(new Date().getTime() - 10 * 1000);
         Assert.assertNotNull(temperatureOperator);
 
-        temperatureOperator.readAndStoreTemperature();
+        temperatureOperator.retrieveAndStore();
 
-        TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
+        TemperatureReadingRepository repository = getContext().getBean(TemperatureReadingRepository.class);
 
         List<TemperatureReading> temperatureReadings = repository.findByReadDateBetween(fromDate, new Date());
 

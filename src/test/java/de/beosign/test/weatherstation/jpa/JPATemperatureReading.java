@@ -14,12 +14,17 @@ import de.beosign.weatherstation.reading.TemperatureReadingRepository;
 import de.beosign.weatherstation.sensor.Sensor;
 import de.beosign.weatherstation.sensor.SensorRepository;
 
+/**
+ * Test JPA.
+ * 
+ * @author Florian Dahlmanns
+ */
 public class JPATemperatureReading extends JUnitUtil {
 
     @Test
     public void saveTemperatureReading() {
-        TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
-        SensorRepository sensorRepository = context.getBean(SensorRepository.class);
+        TemperatureReadingRepository repository = getContext().getBean(TemperatureReadingRepository.class);
+        SensorRepository sensorRepository = getContext().getBean(SensorRepository.class);
 
         TemperatureReading tr = TemperatureUtil.createTemperatureReading();
         sensorRepository.save(tr.getSensor());
@@ -29,8 +34,8 @@ public class JPATemperatureReading extends JUnitUtil {
 
     @Test
     public void saveTwoReadingsForSameSensorTest() {
-        TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
-        SensorRepository sensorRepository = context.getBean(SensorRepository.class);
+        TemperatureReadingRepository repository = getContext().getBean(TemperatureReadingRepository.class);
+        SensorRepository sensorRepository = getContext().getBean(SensorRepository.class);
 
         Sensor s = new Sensor("sensor", "asd");
         TemperatureReading tr = TemperatureUtil.createTemperatureReading();
@@ -55,8 +60,8 @@ public class JPATemperatureReading extends JUnitUtil {
 
     @Test
     public void getReadingBetween() {
-        TemperatureReadingRepository repository = context.getBean(TemperatureReadingRepository.class);
-        SensorRepository sensorRepository = context.getBean(SensorRepository.class);
+        TemperatureReadingRepository repository = getContext().getBean(TemperatureReadingRepository.class);
+        SensorRepository sensorRepository = getContext().getBean(SensorRepository.class);
 
         TemperatureReading tr = TemperatureUtil.createTemperatureReading();
         sensorRepository.save(tr.getSensor());

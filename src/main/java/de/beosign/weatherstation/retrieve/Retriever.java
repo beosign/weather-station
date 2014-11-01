@@ -1,5 +1,7 @@
 package de.beosign.weatherstation.retrieve;
 
+import de.beosign.weatherstation.sensor.Sensor;
+
 /**
  * Classes that retrieve a value from a sensor should extend/implement that interface.
  * 
@@ -13,4 +15,12 @@ public interface Retriever<T> {
      * @return the value
      */
     T retrieve();
+
+    /**
+     * The sensor where the value has been read from.
+     * 
+     * @return sensor
+     */
+    Sensor getSensor();
+
 }

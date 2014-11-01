@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.ecyrd.speed4j.StopWatchFactory;
 
+import de.beosign.weatherstation.ac.lr.LivingRoomHttpProperties;
+import de.beosign.weatherstation.ac.owm.OpenWeatherMapHttpProperties;
 import de.beosign.weatherstation.properties.DatabaseProperties;
-import de.beosign.weatherstation.properties.HttpProperties;
 
 /**
  * Main class.
@@ -39,7 +40,9 @@ public class Application {
         LOGGER.debug("Application started");
         LOGGER.info("Profiles: " + Arrays.toString(ctx.getEnvironment().getActiveProfiles()));
 
-        LOGGER.info("HTTP Properties: " + ctx.getBean(HttpProperties.class));
+        LOGGER.info("LR HTTP Properties: " + ctx.getBean(LivingRoomHttpProperties.class));
+        LOGGER.info("OW HTTP Properties: " + ctx.getBean(OpenWeatherMapHttpProperties.class));
+
         LOGGER.info("Datasource Properties" + ctx.getBean(DatabaseProperties.class));
     }
 

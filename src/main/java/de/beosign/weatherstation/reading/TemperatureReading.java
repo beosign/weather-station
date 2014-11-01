@@ -1,5 +1,7 @@
 package de.beosign.weatherstation.reading;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -40,6 +42,17 @@ public class TemperatureReading extends Reading<Double> {
      */
     public TemperatureReading(Double temp, Sensor sensor) {
         super(temp, sensor);
+    }
+
+    /**
+     * Instantiates a new temperature reading.
+     *
+     * @param date when has the value been read
+     * @param temp the temperature
+     * @param sensor sensor
+     */
+    public TemperatureReading(Date date, Double temp, Sensor sensor) {
+        super(date, temp, sensor);
     }
 
 }

@@ -6,8 +6,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import de.beosign.weatherstation.operator.TemperatureOperator;
-import de.beosign.weatherstation.retrieve.TemperatureRetriever;
-import de.beosign.weatherstation.sensor.Sensor;
+import de.beosign.weatherstation.reading.TemperatureReading;
+import de.beosign.weatherstation.retrieve.Retriever;
 
 /**
  * Reads and the stores the temperature in the living room.
@@ -18,26 +18,18 @@ import de.beosign.weatherstation.sensor.Sensor;
 @Component
 public class LivingRoomTemperatureOperator extends TemperatureOperator {
     @Autowired
-    private LivingRoomHttpTemperatureRetriever temperatureReader;
-
-    @Autowired
-    private LivingRoomSensorProperties sensorProperties;
+    private LivingRoomHttpTemperatureRetriever temperatureRetriever;
 
     @Override
-    protected TemperatureRetriever getTemperatureRetriever() {
-        return temperatureReader;
+    public Retriever<TemperatureReading> getRetriever() {
+        return temperatureRetriever;
     }
 
+    @Override
     @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")
-    @Override
     protected void readAndStoreScheduled() {
-        readAndStoreTemperature();
+        retrieveAndStore();
 
-    }
-
-    @Override
-    protected Sensor getTemperatureSensor() {
-        return new Sensor(sensorProperties.getName(), sensorProperties.getDescription());
     }
 
 }
