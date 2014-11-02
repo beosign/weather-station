@@ -1,11 +1,11 @@
 buildscript {
     repositories {
         maven { url "http://repo.spring.io/libs-release" }
-        mavenLocal()
+        //mavenLocal()
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.6.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE")
     }
 }
 
@@ -23,12 +23,13 @@ jar {
     baseName = 'weatherstation'
 }
 
+// When 'gradle run' is issued, set profile to DEV 
 run {
     systemProperty "spring.profiles.active", "dev"
 }
 
 repositories {
-    mavenLocal()
+    //mavenLocal()
     mavenCentral()
     maven { url "http://repo.spring.io/libs-release" }
     maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
