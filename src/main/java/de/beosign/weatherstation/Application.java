@@ -2,8 +2,6 @@ package de.beosign.weatherstation;
 
 import java.util.Arrays;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,6 +13,7 @@ import com.ecyrd.speed4j.StopWatchFactory;
 
 import de.beosign.weatherstation.ac.lr.LivingRoomHttpProperties;
 import de.beosign.weatherstation.ac.owm.OpenWeatherMapHttpProperties;
+import de.beosign.weatherstation.logging.Log;
 import de.beosign.weatherstation.properties.DatabaseProperties;
 
 /**
@@ -27,7 +26,6 @@ import de.beosign.weatherstation.properties.DatabaseProperties;
 @EnableConfigurationProperties
 @ComponentScan
 public class Application {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
     private static StopWatchFactory stopWatchFactory = StopWatchFactory.getInstance("loggingFactory");
 
     /**
@@ -44,13 +42,13 @@ public class Application {
      */
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        LOGGER.debug("Application started");
-        LOGGER.info("Profiles: " + Arrays.toString(ctx.getEnvironment().getActiveProfiles()));
+        Log.logger().debug("Application started");
+        Log.logger().info("Profiles: " + Arrays.toString(ctx.getEnvironment().getActiveProfiles()));
 
-        LOGGER.info("LR HTTP Properties: " + ctx.getBean(LivingRoomHttpProperties.class));
-        LOGGER.info("OW HTTP Properties: " + ctx.getBean(OpenWeatherMapHttpProperties.class));
+        Log.logger().info("LR HTTP Properties: " + ctx.getBean(LivingRoomHttpProperties.class));
+        Log.logger().info("OW HTTP Properties: " + ctx.getBean(OpenWeatherMapHttpProperties.class));
 
-        LOGGER.info("Datasource Properties" + ctx.getBean(DatabaseProperties.class));
+        Log.logger().info("Datasource Properties" + ctx.getBean(DatabaseProperties.class));
     }
 
     /**

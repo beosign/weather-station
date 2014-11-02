@@ -22,10 +22,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import de.beosign.weatherstation.logging.Log;
 import de.beosign.weatherstation.properties.HttpProperties;
 
 /**
@@ -36,7 +35,6 @@ import de.beosign.weatherstation.properties.HttpProperties;
  */
 @Component
 public abstract class HttpRetriever<T> extends AbstractRetriever<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRetriever.class);
 
     private HttpProperties httpProperties;
 
@@ -52,7 +50,7 @@ public abstract class HttpRetriever<T> extends AbstractRetriever<T> {
             try (CloseableHttpResponse r = httpClient.execute(get)) {
                 tr = extract(r.getEntity().getContent());
             }
-            LOGGER.debug("Read: " + tr);
+            Log.logger().debug("Read: " + tr);
         } catch (KeyManagementException | NumberFormatException | NoSuchAlgorithmException | IllegalStateException | IOException e) {
             throw new RetrieveException(e);
         }

@@ -1,11 +1,10 @@
 package de.beosign.weatherstation.retrieve;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import de.beosign.weatherstation.logging.Log;
 import de.beosign.weatherstation.properties.SensorProperties;
 import de.beosign.weatherstation.sensor.Sensor;
 import de.beosign.weatherstation.sensor.SensorRepository;
@@ -18,7 +17,6 @@ import de.beosign.weatherstation.sensor.SensorRepository;
  */
 @Component
 public abstract class AbstractRetriever<T> implements Retriever<T>, InitializingBean {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRetriever.class);
 
     private Sensor sensor;
 
@@ -52,11 +50,11 @@ public abstract class AbstractRetriever<T> implements Retriever<T>, Initializing
         Sensor transientSensor = new Sensor(sensorProperties.getName(), sensorProperties.getDescription());
         sensor = sensorRepository.findByName(transientSensor.getName());
         if (sensor == null) {
-            LOGGER.info("No sensor named {} found, creating sensor", transientSensor.getName());
+            Log.logger().info("No sensor named {} found, creating sensor", transientSensor.getName());
             sensor = sensorRepository.save(transientSensor);
 
         } else {
-            LOGGER.info("Sensor named {} found, using existing sensor", sensor.getName());
+            Log.logger().info("Sensor named {} found, using existing sensor", sensor.getName());
         }
 
         doAfterPropertiesSet();

@@ -1,9 +1,8 @@
 package de.beosign.weatherstation.operator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import de.beosign.weatherstation.logging.Log;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
 
@@ -13,7 +12,6 @@ import de.beosign.weatherstation.reading.TemperatureReadingRepository;
  * @author Florian Dahlmanns
  */
 public abstract class TemperatureOperator implements Operator<TemperatureReading> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TemperatureOperator.class);
 
     @Autowired
     private TemperatureReadingRepository temperatureReadingRepository;
@@ -34,7 +32,7 @@ public abstract class TemperatureOperator implements Operator<TemperatureReading
         TemperatureReading tr = getRetriever().retrieve();
 
         temperatureReadingRepository.save(tr);
-        LOGGER.info("Stored temperature: " + tr);
+        Log.logger().info("Stored temperature: " + tr);
     }
 
     // @Scheduled(fixedDelayString = "${livingroom.http.temperature.query_interval}")

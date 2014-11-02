@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.apache.commons.io.input.TeeInputStream;
 import org.apache.commons.io.output.TeeOutputStream;
 import org.jboss.logging.MDC;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.DelegatingServletInputStream;
 import org.springframework.mock.web.DelegatingServletOutputStream;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
@@ -35,7 +33,6 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
     private static final int COUNTER_MODULUS = 10000;
     private static final String MDC_REQID = "REQID";
     private static final AtomicLong REQ_COUNTER = new AtomicLong();
-    private static final Logger LOGGER = LoggerFactory.getLogger(TraceServletFilter.class);
 
     /**
      * Sets logging options: include client info and query string while logging.
@@ -47,12 +44,12 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
 
     @Override
     protected void beforeRequest(HttpServletRequest request, String message) {
-        LOGGER.debug(message);
+        Log.logger().debug(message);
     }
 
     @Override
     protected void afterRequest(HttpServletRequest request, String message) {
-        LOGGER.debug(message);
+        Log.logger().debug(message);
     }
 
     @Override
@@ -69,7 +66,7 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
         HttpServletRequest requestWrapper = loggingRequestWrapper(request, requestBaos);
 
         Exception ex = null;
-        LOGGER.trace("Request:\n" + requestBaos.toString());
+        Log.logger().trace("Request:\n" + requestBaos.toString());
 
         try {
             super.doFilterInternal(requestWrapper, responseWrapper, filterChain);
@@ -77,7 +74,7 @@ public final class TraceServletFilter extends AbstractRequestLoggingFilter {
             ex = e;
             throw e;
         } finally {
-            LOGGER.trace("Response:\n" + responseBaos.toString());
+            Log.logger().trace("Response:\n" + responseBaos.toString());
 
             perfLogMessage = perfLogMessage + ", request body size = " + requestBaos.size() + ", response body size = " + responseBaos.size();
             if (ex != null) {
