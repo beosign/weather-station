@@ -22,8 +22,8 @@ public class InterceptorBeans {
     public RepositoryTraceInterceptor repositoryTraceInterceptor() {
 
         RepositoryTraceInterceptor interceptor = new RepositoryTraceInterceptor();
-        interceptor.setEnterMessage("Entering $[targetClassName]::$[methodName]($[arguments]).");
-        interceptor.setExitMessage("Leaving $[targetClassName]::$[methodName](..) with return value $[returnValue], took $[invocationTime]ms.");
+        interceptor.setEnterMessage("Entering $[targetClassShortName]::$[methodName]($[arguments]).");
+        interceptor.setExitMessage("Leaving $[targetClassShortName]::$[methodName](..) with return value $[returnValue], took $[invocationTime]ms.");
 
         return interceptor;
     }

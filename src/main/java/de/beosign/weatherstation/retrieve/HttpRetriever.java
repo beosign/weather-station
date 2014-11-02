@@ -84,8 +84,9 @@ public abstract class HttpRetriever<T> extends AbstractRetriever<T> {
      * 
      * @param content content
      * @return extracted data
+     * @throws IOException if an {@link IOException} occurred
      */
-    protected abstract T extract(InputStream content);
+    protected abstract T extract(InputStream content) throws IOException;
 
     /**
      * Creates an http client. Sets features like SSL and Basic Authentication.

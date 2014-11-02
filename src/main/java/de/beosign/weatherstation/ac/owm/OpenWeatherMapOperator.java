@@ -1,4 +1,6 @@
-package de.beosign.weatherstation.operator;
+package de.beosign.weatherstation.ac.owm;
+
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,10 +8,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import de.beosign.weatherstation.operator.Operator;
+import de.beosign.weatherstation.reading.OpenWeatherMapData;
 import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
-import de.beosign.weatherstation.retrieve.OpenWeatherMapData;
-import de.beosign.weatherstation.retrieve.OpenWeatherMapHttpRetriever;
 import de.beosign.weatherstation.retrieve.Retriever;
 
 /**
@@ -37,7 +39,7 @@ public class OpenWeatherMapOperator implements Operator<OpenWeatherMapData> {
     @Override
     public void retrieveAndStore() {
         OpenWeatherMapData data = getRetriever().retrieve();
-        TemperatureReading tr = new TemperatureReading(data.getLastupdate(), data.getTemperature(), httpRetriever.getSensor());
+        TemperatureReading tr = new TemperatureReading(Date.from(data.getTimestamp().toInstant()), data.getTemperature(), httpRetriever.getSensor());
 
         temperatureReadingRepository.save(tr);
         LOGGER.info("Stored temperature: " + tr);

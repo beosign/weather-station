@@ -31,6 +31,13 @@ public class Application {
     private static StopWatchFactory stopWatchFactory = StopWatchFactory.getInstance("loggingFactory");
 
     /**
+     * Spring does not work if this is private.
+     */
+    protected Application() {
+
+    }
+
+    /**
      * Main method.
      * 
      * @param args args

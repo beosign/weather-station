@@ -1,15 +1,18 @@
-package de.beosign.weatherstation.retrieve;
+package de.beosign.weatherstation.ac.owm;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.beosign.weatherstation.ac.owm.OpenWeatherMapHttpProperties;
-import de.beosign.weatherstation.ac.owm.OpenWeatherMapSensorProperties;
 import de.beosign.weatherstation.properties.HttpProperties;
 import de.beosign.weatherstation.properties.SensorProperties;
+import de.beosign.weatherstation.reading.OpenWeatherMapData;
+import de.beosign.weatherstation.retrieve.HttpRetriever;
 
 /**
  * Retrieves temperature in living room.
@@ -18,6 +21,7 @@ import de.beosign.weatherstation.properties.SensorProperties;
  */
 @Component
 public class OpenWeatherMapHttpRetriever extends HttpRetriever<OpenWeatherMapData> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpenWeatherMapHttpRetriever.class);
 
     @Autowired
     private OpenWeatherMapHttpProperties openWeatherMapHttpProperties;
@@ -27,18 +31,14 @@ public class OpenWeatherMapHttpRetriever extends HttpRetriever<OpenWeatherMapDat
 
     @Override
     protected HttpProperties getHttpProperties() {
-
         return openWeatherMapHttpProperties;
     }
 
     @Override
-    protected OpenWeatherMapData extract(InputStream inputStream) {
-        OpenWeatherMapData data = new OpenWeatherMapData();
-        data.setLastupdate(new Date());
-        data.setTemperature(2.0);
-
-        // TODO Parse
-        return data;
+    protected OpenWeatherMapData extract(InputStream inputStream) throws IOException {
+        String json = IOUtils.toString(inputStream);
+        LOGGER.debug("JSON from OpenWeatherMap: " + json);
+        return OpenWeatherMapData.fromJson(json);
     }
 
     @Override

@@ -20,7 +20,6 @@ import de.beosign.weatherstation.sensor.SensorRepository;
 public abstract class AbstractRetriever<T> implements Retriever<T>, InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRetriever.class);
 
-    private SensorProperties sensorProperties;
     private Sensor sensor;
 
     @Autowired
@@ -48,7 +47,7 @@ public abstract class AbstractRetriever<T> implements Retriever<T>, Initializing
      */
     @Override
     public final void afterPropertiesSet() throws Exception {
-        sensorProperties = getSensorProperties();
+        SensorProperties sensorProperties = getSensorProperties();
 
         Sensor transientSensor = new Sensor(sensorProperties.getName(), sensorProperties.getDescription());
         sensor = sensorRepository.findByName(transientSensor.getName());

@@ -21,7 +21,16 @@ import de.beosign.weatherstation.reading.TemperatureReading;
 import de.beosign.weatherstation.reading.TemperatureReadingRepository;
 import de.beosign.weatherstation.sensor.SensorRepository;
 
+/**
+ * Test REST functionality.
+ * 
+ * @author Florian Dahlmanns
+ */
 public class RestReading extends JUnitUtil {
+
+    /**
+     * Retrieves values from database via REST.
+     */
     @Test
     public void callServlet() {
         TemperatureReadingRepository repository = getContext().getBean(TemperatureReadingRepository.class);

@@ -16,6 +16,10 @@ import org.junit.Test;
  */
 public class DateTimeTest {
 
+    /**
+     * Convert UTC to local time.
+     */
+    @SuppressWarnings("deprecation")
     @Test
     public void convertUTCToLocal() {
         int offsetSeconds = ZoneId.systemDefault().getRules().getOffset(Instant.now()).getTotalSeconds();
@@ -29,8 +33,8 @@ public class DateTimeTest {
         Date res = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         System.out.println(res);
 
-        Assert.assertTrue(res.getHours() == date.getHour() + offsetSeconds / 3600.0);
-        Assert.assertTrue(localDateTime.getHour() == date.getHour() + offsetSeconds / 3600.0);
+        Assert.assertEquals(res.getHours(), date.getHour() + offsetSeconds / 3600.0, 1);
+        Assert.assertEquals(localDateTime.getHour(), date.getHour() + offsetSeconds / 3600.0, 1);
 
     }
 
