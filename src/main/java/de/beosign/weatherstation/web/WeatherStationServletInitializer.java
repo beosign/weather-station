@@ -11,8 +11,9 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.web.context.WebApplicationContext;
 
 import de.beosign.weatherstation.Application;
+import de.beosign.weatherstation.ac.lr.LivingRoomHttpProperties;
+import de.beosign.weatherstation.ac.owm.OpenWeatherMapHttpProperties;
 import de.beosign.weatherstation.properties.DatabaseProperties;
-import de.beosign.weatherstation.properties.HttpProperties;
 
 /**
  * This class is used when running in a separate servlet container like TOMCAT.
@@ -49,7 +50,8 @@ public class WeatherStationServletInitializer extends SpringBootServletInitializ
         LOGGER.debug("Application started");
         LOGGER.info("Profiles: " + Arrays.toString(ctx.getEnvironment().getActiveProfiles()));
 
-        LOGGER.info("HTTP Properties: " + ctx.getBean(HttpProperties.class));
+        LOGGER.info("OpenWeather HTTP Properties: " + ctx.getBean(OpenWeatherMapHttpProperties.class));
+        LOGGER.info("LivingRoom HTTP Properties: " + ctx.getBean(LivingRoomHttpProperties.class));
         LOGGER.info("Datasource Properties" + ctx.getBean(DatabaseProperties.class));
 
         return ctx;
